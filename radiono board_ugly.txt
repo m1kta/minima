@@ -1,3 +1,6 @@
+This as is as per others... I will mix this up a bit as will use the spare ADC A0
+line for the VSWR, power meter and supply voltage meter
+
 arudino controller for transceivers
 
 
