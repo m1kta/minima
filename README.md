@@ -1,0 +1,4 @@
+minima
+======
+
+My minima bodging
