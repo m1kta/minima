@@ -27,7 +27,7 @@ I/O PIN
     20    VCC A
     21    NC
     22    GND A
-A0  23   NC   (Narrow/Wide switch?)
+A0  23   VSWR, power meter and supply voltage meter
 A1  24   Keyer (1K pull up, 2,2K, 1K pull downs, short on straight key) (blue in the bundle)
 A2  25   TUNING POT
 A3  26   Function Switch
