@@ -5,7 +5,10 @@
 
     
     // The Number of Ham Bands
-    // Need to adjust these for UK 60m, 137 and 472 as well so actually 12 bands and 60m is a bit different to US
+    // Need to adjust these for UK 80m, 40m add 137KHz and 472KHz as well so actually 11 bands and 
+    // 60m is also bit different to US as got range of frequencies not channels
+    // 60m MIGHT add the Swedish spot frequencies as well
+    
     #define BANDS_BASE (9)  // 9 Standard HF Band
     #define BANDS_60M (5)   // 5 60m Freq's which are treated as bands here
     
