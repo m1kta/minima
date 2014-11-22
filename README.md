@@ -1,4 +1,0 @@
-minima
-======
-
-My minima bodging
