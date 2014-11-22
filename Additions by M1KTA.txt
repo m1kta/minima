@@ -1,0 +1,8 @@
+The following additions and amendments by M1KTA are implemented
+  
+    o Adjustments to bands for UK band plans, adding 137KHz & 472KHz, adjusting 60m to bands not channels, adjusting top of 40m, 
+    o Amend to use 20x4 LCD so add a line for VSWR, Power Meter and Supply Voltage
+
+    See: https://github.com/wa0uwh/radiono_erb for original http://m1kta-qrp.blogspot.com for info
+
+--
