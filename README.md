@@ -56,7 +56,7 @@ Modified by: Eldon R. Brown (ERB) - WA0UWH - Copyright (C) 2014
 
 Modified by: Dominic Baines - M1KTA - Copyright (C) 2014
 
-         1). Ameded the bands so made sense in UK, added 137KHz, 472KHz and modified 60m, removed 75m, cleaned up 40m
+         1). Amended the bands so made sense in UK, added 137KHz, 472KHz and modified 60m, removed 75m, cleaned up 40m
          
          2). Added VSWR, Power and Supply voltage section (Using 4x20 I2C LCD only)
 --
