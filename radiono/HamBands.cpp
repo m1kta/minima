@@ -51,6 +51,7 @@ Beacons on 5290 kHz (Note-2), WSPR
 Need to add 137KHz section limit to 200Hz modes only CW, QRSS and Narrow mode digital only
 Need to add 472kHz section limit to 500Hz modes only CW, QRSS and Narrow mode digital only
 Do not need two 80m sections as 3.800MHz is top of UK allocation, don't need 75m section
+Some of the QRP frequencies were wrong for UK... esp 40m as do not have 7200 to 7300
 
 */
 
