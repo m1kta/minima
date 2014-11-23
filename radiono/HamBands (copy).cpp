@@ -50,10 +50,12 @@ Beacons on 5290 kHz (Note-2), WSPR
 
 Need to add 137KHz section limit to 200Hz modes only CW, QRSS and Narrow mode digital only
 Need to add 472kHz section limit to 500Hz modes only CW, QRSS and Narrow mode digital only
-Do not need two 80m sections as 3.800MHz is top of UK allocation, don't need a 333375m section
+Do not need two 80m sections as 3.800MHz is top of UK allocation, don't need 75m section
 Some of the QRP frequencies were wrong for UK... esp 40m as do not have 7200 to 7300
 
 */
+
+
 
 #include <Arduino.h>
 #include "A1Main.h"
@@ -63,24 +65,21 @@ Some of the QRP frequencies were wrong for UK... esp 40m as do not have 7200 to 
 
 // PROGMEM is used to avoid using the small available variable space
 const unsigned long bandLimits[BANDS*2] PROGMEM = {  // Lower and Upper Band Limits
-136 * KHz, 137 * KHz, // 137
-472 * KHz, 479 * KHz, // 472
-
       1.80  * MHz,   2.00  * MHz, // 160m
-      3.50  * MHz,   3.80  * MHz, //  80m
       
-5.2585* MHz,  5.264* MHz, //  60m Channel1
-5.276* MHz,   5.284* MHz, //  60m Channel 2
-5.2885* MHz,  5.292* MHz, //  60m Channel 3
-5.298* MHz,   5.307* MHz, //  60m Channel 4
-5.313* MHz,   5.323* MHz, //  60m Channel 5
-5.333* MHz,   5.338* MHz, //  60m Channel 6
-5.354* MHz,   5.358* MHz, //  60m Channel 7
-5.362* MHz,   5.3745* MHz, //  60m Channel 8
-5.378* MHz,   5.382* MHz, //  60m Channel 9
-5.395* MHz,   5.4015* MHz, //  60m Channel 10
-5.4035* MHz,  5.4065* MHz, //  60m Channel 11
+      #ifndef USE_80M_SECTIONS
+         3.50  * MHz,   4.00  * MHz, //  80m
+      #else // USE_80M_SECTIONS
+         LOWER_FREQ_80M_SECTION_01, UPPER_FREQ_80M_SECTION_01-1, // 80m
+         UPPER_FREQ_80M_SECTION_01, UPPER_FREQ_80M_SECTION_02,   // 75m
+      #endif // USE_80M_SECTIONS
+      
+      5.3305* MHz,   5.3305* MHz, //  60m Channel 1
+      5.3465* MHz,   5.3465* MHz, //  60m Channel 2
+      5.3570* MHz,   5.3570* MHz, //  60m Channel 3
+      5.3715* MHz,   5.3715* MHz, //  60m Channel 4
 
+      
       7.00  * MHz,   7.20  * MHz, //  40m
      10.10  * MHz,  10.15  * MHz, //  30m
      14.00  * MHz,  14.35  * MHz, //  20m
@@ -101,26 +100,18 @@ const unsigned long bandLimits[BANDS*2] PROGMEM = {  // Lower and Upper Band Lim
 
 // An Array to save: A-VFO & B-VFO
 unsigned long freqCache[BANDS*2] = { // Set Default Values for Cache
- 136 * KHz, 137 * KHz, // 137
- 472 * KHz, 479 * KHz, // 472
-
       1.825  * MHz,  1.825  * MHz,  // 160m - QRP SSB Calling Freq
- 
-     3.560  * MHz,  3.560  * MHz,  //  80m - QRP CW Calling Freq
-     3.690  * MHz,  3.690  * MHz,  //  80m - QRP SSB Calling Freq
+      
+      #ifdef USE_80M_SECTIONS
+      3.560  * MHz,  3.560  * MHz,  //  80m - QRP CW Calling Freq
+      3.690  * MHz,  3.690  * MHz,  //  80m - QRP SSB Calling Freq
+      #endif // USE_80M_SECTIONS
       
 
-5.2585* MHz,  5.264* MHz, //  60m Channel 1
-5.276* MHz,   5.284* MHz, //  60m Channel 2
-5.2885* MHz,  5.292* MHz, //  60m Channel 3
-5.298* MHz,   5.307* MHz, //  60m Channel 4
-5.313* MHz,   5.323* MHz, //  60m Channel 5
-5.333* MHz,   5.338* MHz, //  60m Channel 6
-5.354* MHz,   5.358* MHz, //  60m Channel 7
-5.362* MHz,   5.3745* MHz, //  60m Channel 8
-5.378* MHz,   5.382* MHz, //  60m Channel 9
-5.395* MHz,   5.4015* MHz, //  60m Channel 10
-5.4035* MHz,  5.4065* MHz, //  60m Channel 11
+      5.3305 * MHz,  5.3305 * MHz,  //  60m Channel 1
+      5.3465 * MHz,  5.3465 * MHz,  //  60m Channel 2
+      5.3570 * MHz,  5.3570 * MHz,  //  60m Channel 3
+      5.3715 * MHz,  5.3715 * MHz,  //  60m Channel 4
       
       7.090  * MHz,  7.090  * MHz,  //  40m - QRP SSB Calling Freq
      10.1387 * MHz, 10.1387 * MHz,  //  30m - QRP QRSS, WSPR and PropNET
@@ -142,23 +133,18 @@ unsigned long freqCache[BANDS*2] = { // Set Default Values for Cache
    };
    
 byte sideBandModeCache[BANDS*2] = {
-      AutoSB,  AutoSB, // 137
-      AutoSB,  AutoSB, // 472
       AutoSB,  AutoSB, // 160m
       
       AutoSB,  AutoSB, //  80m
-            
+      #ifdef USE_80M_SECTIONS
+          AutoSB,  AutoSB, //  75m
+      #endif // USE_80M_SECTIONS
+      
       AutoSB,  AutoSB, //  60m Channel 1
       AutoSB,  AutoSB, //  60m Channel 2
       AutoSB,  AutoSB, //  60m Channel 3
       AutoSB,  AutoSB, //  60m Channel 4
       AutoSB,  AutoSB, //  60m Channel 5
-      AutoSB,  AutoSB, //  60m Channel 6
-      AutoSB,  AutoSB, //  60m Channel 7
-      AutoSB,  AutoSB, //  60m Channel 8
-      AutoSB,  AutoSB, //  60m Channel 9
-      AutoSB,  AutoSB, //  60m Channel 10
-      AutoSB,  AutoSB, //  60m Channel 11
       
       AutoSB,  AutoSB, //  40m
       AutoSB,  AutoSB, //  30m
@@ -175,23 +161,20 @@ byte sideBandModeCache[BANDS*2] = {
 };
 
 int hamBands[BANDS]  = {
-     137, //137KHz
-     472, //472KHz
+     //137, //137KHz
+     //472, //472KHz
      160,
      
       80,
+      #ifdef USE_80M_SECTIONS
+          75, //  75m
+      #endif // USE_80M_SECTIONS
       
       6001, // 60m Channel 1, Note: Channel Number is encoded as least digit
       6002, // 60m Channel 2
       6003, // 60m Channel 3
       6004, // 60m Channel 4
       6005, // 60m Channel 5
-      6006, // 60m Channel 6
-      6007, // 60m Channel 7
-      6008, // 60m Channel 8
-      6009, // 60m Channel 9
-      6010, // 60m Channel 10
-      6011, // 60m Channel 11
       
       40,
       30,
@@ -256,7 +239,7 @@ void decodeBandUpDown(int dir) {
     
     if (dir > 0) {  // For Band Change, Up
        for (int i = 0; i < BANDS; i++) {
-         if (!operate60m) while(hamBands[i] > 6000 && hamBands[i] < 6012) i++;
+         if (!operate60m) while(hamBands[i] > 6000 && hamBands[i] < 6010) i++;
          j = i*2 + vfoActive;
          if (vfos[vfoActive] <= pgm_read_dword(&bandLimits[i*2+1])) {
            if (vfos[vfoActive] >= pgm_read_dword(&bandLimits[i*2])) {
@@ -265,7 +248,7 @@ void decodeBandUpDown(int dir) {
              sideBandModeCache[j] = sideBandMode;
              i++;
            }
-           if (!operate60m) while(hamBands[i] > 6000 && hamBands[i] < 6012) i++;
+           if (!operate60m) while(hamBands[i] > 6000 && hamBands[i] < 6010) i++;
            // Load From Next Cache Up Band
            j = i*2 + vfoActive;
            vfos[vfoActive] = freqCache[min(j,BANDS*2-1)];
@@ -277,7 +260,7 @@ void decodeBandUpDown(int dir) {
      
      else { // For Band Change, Down
        for (int i = BANDS-1; i > 0; i--) {
-         if (!operate60m) while(hamBands[i] > 6000 && hamBands[i] < 6012) i--;
+         if (!operate60m) while(hamBands[i] > 6000 && hamBands[i] < 6010) i--;
          j = i*2 + vfoActive;
          if (vfos[vfoActive] >= pgm_read_dword(&bandLimits[i*2])) {
            if (vfos[vfoActive] <= pgm_read_dword(&bandLimits[i*2+1])) {
@@ -286,7 +269,7 @@ void decodeBandUpDown(int dir) {
              sideBandModeCache[j] = sideBandMode;
              i--;
            }
-           if (!operate60m) while(hamBands[i] > 6000 && hamBands[i] < 6012) i--;
+           if (!operate60m) while(hamBands[i] > 6000 && hamBands[i] < 6010) i--;
            // Load From Next Cache Down Band
            j = i*2 + vfoActive;
            vfos[vfoActive] = freqCache[max(j,vfoActive)];
