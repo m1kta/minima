@@ -71,7 +71,7 @@
  *
  * Modified by: Dominic Baines (KTA) - M1KTA - Copyright (C) 2014
  *   Amended for UK Band plans
- *   Added 137KHz and 472KHz Limit to CW mode only
+ *   Added 137KHz and 472KHz Limit to CW mode only (not yet complete)
  *   Amended 60m from channels to ranges of frequencies within the bands (not yet complete)
   */
 
