@@ -2,6 +2,8 @@ The following additions and amendments by M1KTA are implemented
   
     o Adjustments to bands for UK band plans, adding 137KHz & 472KHz, adjusting 60m to bands not channels, adjusting top of 40m, 
     o Amend to use 20x4 LCD so add a line for VSWR, Power Meter and Supply Voltage
+    o Need to default 137 and 472 to cw modes only
+    o Need to look at the bandwidth constrints vs modes for the 60m sections, all are not the same
 
     See: https://github.com/m1kta/minima for original http://m1kta-qrp.blogspot.com for info
 
